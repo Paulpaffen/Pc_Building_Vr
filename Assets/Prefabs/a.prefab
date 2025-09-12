@@ -11,8 +11,14 @@ PrefabInstance:
     - target: {fileID: -6689036041284674117, guid: 4f4e77fb293ecb0459f8c5ae0e156401,
         type: 3}
       propertyPath: m_Name
-      value: free_gaming_pc
+      value: a
       objectReference: {fileID: 0}
+    - target: {fileID: 1715861204736904253, guid: 4f4e77fb293ecb0459f8c5ae0e156401,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 824316120053824133, guid: 242fc3b81dc490640adf6abb21122c10,
+        type: 3}
     - target: {fileID: 2774220344278030320, guid: 4f4e77fb293ecb0459f8c5ae0e156401,
         type: 3}
       propertyPath: m_LocalPosition.x
