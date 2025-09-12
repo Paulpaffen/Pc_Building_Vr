@@ -1,14 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class BuildStep
 {
     public string stepName;
-    public GameObject animatedPart; // La pieza con la animación
-    public GameObject finalPart;    // La pieza final estática
-    public string animationTrigger = "Assemble"; // Nombre del trigger de animación
+
+    // Prefabs
+    public GameObject prefabAnimated; // Prefab con animación
+    public GameObject prefabFinal;    // Prefab estático final
+
+    // Instancias en runtime
+    [HideInInspector] public GameObject animatedInstance;
+    [HideInInspector] public GameObject finalInstance;
+
+    public string animationTrigger = "Assemble";
 }
 
 public class PCBuildSequence : MonoBehaviour
@@ -16,43 +22,65 @@ public class PCBuildSequence : MonoBehaviour
     public List<BuildStep> steps = new List<BuildStep>();
     private int currentStep = -1;
 
+    // 🔹 Reinicia la secuencia destruyendo todo
     public void ResetSequence()
     {
         foreach (var step in steps)
         {
-            if (step.animatedPart != null) step.animatedPart.SetActive(false);
-            if (step.finalPart != null) step.finalPart.SetActive(false);
+            if (step.animatedInstance != null) Destroy(step.animatedInstance);
+            if (step.finalInstance != null) Destroy(step.finalInstance);
+
+            step.animatedInstance = null;
+            step.finalInstance = null;
         }
         currentStep = -1;
+        Debug.Log("🔄 Secuencia reseteada.");
     }
 
+    // 🔹 Avanzar un paso en el ensamblaje
     public void NextStep()
     {
-        // Si ya había un paso activo → ocultar animada y mostrar final
+        // Cerrar paso previo
         if (currentStep >= 0 && currentStep < steps.Count)
         {
             var prevStep = steps[currentStep];
-            if (prevStep.animatedPart != null) prevStep.animatedPart.SetActive(false);
-            if (prevStep.finalPart != null) prevStep.finalPart.SetActive(true);
+
+            // Destruir animado si estaba
+            if (prevStep.animatedInstance != null)
+            {
+                Destroy(prevStep.animatedInstance);
+                prevStep.animatedInstance = null;
+            }
+
+            // Instanciar versión final si existe
+            if (prevStep.prefabFinal != null && prevStep.finalInstance == null)
+            {
+                prevStep.finalInstance = Instantiate(prevStep.prefabFinal, transform);
+            }
         }
 
-        // Pasar al siguiente paso
+        // Avanzar al siguiente
         currentStep++;
 
         if (currentStep < steps.Count)
         {
             var step = steps[currentStep];
 
-            if (step.animatedPart != null)
+            if (step.prefabAnimated != null)
             {
-                step.animatedPart.SetActive(true);
+                // Instanciar animación
+                step.animatedInstance = Instantiate(step.prefabAnimated, transform);
 
-                // Lanzar animación (si tiene Animator)
-                Animator anim = step.animatedPart.GetComponent<Animator>();
-                if (anim != null && !string.IsNullOrEmpty(step.animationTrigger))
+                // Activar animator solo aquí
+                Animator anim = step.animatedInstance.GetComponent<Animator>();
+                if (anim != null)
                 {
-                    anim.ResetTrigger(step.animationTrigger);
-                    anim.SetTrigger(step.animationTrigger);
+                    anim.enabled = true; // 🔹 Asegúrate que esté desactivado en el prefab
+                    if (!string.IsNullOrEmpty(step.animationTrigger))
+                    {
+                        anim.ResetTrigger(step.animationTrigger);
+                        anim.SetTrigger(step.animationTrigger);
+                    }
                 }
             }
         }
