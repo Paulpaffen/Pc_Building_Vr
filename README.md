@@ -1,4 +1,5 @@
 🧠 Ensambla tu PC en Realidad Virtual
+
 🔧 Tecnologías usadas
 
 Unity 2022.3 LTS
@@ -13,6 +14,8 @@ TextMeshPro para interfaz ligera
 
 URP (Universal Render Pipeline) para optimización gráfica
 
+========================================================================================================================================================================================
+
 ⚙️ Pre-requisitos
 
 Para desarrollar o ejecutar el proyecto, necesitas:
@@ -25,9 +28,12 @@ Android Build Support habilitado en Unity.
 
 (Opcional) Git LFS si el repositorio tiene archivos pesados (modelos o texturas).
 
+========================================================================================================================================================================================
+
 💡 Descripción del proyecto
 
 "Ensambla tu PC en VR" es una experiencia educativa interactiva donde los usuarios aprenden a reconocer los componentes internos de un computador y cómo ensamblarlos correctamente.
+
 El proyecto cuenta con tres modos principales:
 
 Modo Aprendizaje — explora y conoce las partes del PC con descripciones.
@@ -37,4 +43,18 @@ Modo Armado Libre — arma un computador desde cero sin guía, experimentando co
 Modo Animaciones — observa el proceso completo de ensamblaje automatizado paso a paso.
 
 Además, la aplicación incluye retroalimentación sonora al ensamblar correctamente, textos explicativos, y optimización para Meta Quest con materiales URP livianos.
+
+========================================================================================================================================================================================
+
+▶️ Instrucciones de uso del ejecutable (APK)
+
+Descarga el archivo .apk desde la sección Releases del repositorio.
+
+Conecta tus gafas Meta Quest al PC y abre SideQuest.
+
+En SideQuest, selecciona "Install APK" y elige el archivo descargado.
+
+Dentro del visor, abre la aplicación desde “Fuentes desconocidas”.
+
+Usa los controladores para seleccionar modos y ensamblar las piezas.
 
